@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "1c83eb5a-4fbf-4f8e-8cab-54ba971b2ec5",
+		"name": "Mvel-Editor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "If-Else only",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"execute\": {\n      \"expressions\": [\n        {\n          \"type\": \"IF_ELSE\",\n          \"object\": {\n            \"hasElseBlock\" : true,  \n            \"conditions\": [\n              {\n                \"leftExp\": \"1\",\n                \"rightExp\": \"1\",\n                \"operator\": \"EQUALS\",\n                \"hasNextCondition\": false,\n                \"nextConditionOperator\": \"string\"\n              }\n            ],\n            \"innerIfExpression\" : {\n              \"type\": \"RETURN\",\n              \"object\": \"true\"\n           },\n           \"innerElseExpression\" : {\n              \"type\": \"RETURN\",\n              \"object\": \"false\"\n           }\n          }\n        }\n      ]\n    }\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/mvelgenerator/generate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"mvelgenerator",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Code+If-Else only",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"code\": {\n    \"methods\": [\n      {\n        \"methodName\": \"extractByPath\",\n        \"returnVariable\": \"productcode\",\n        \"arguments\": [\n          \"rawEvent\",\"'$.body.entity.detailsInfo.partnerInfo.productCode'\",\"pipelineContext\"\n        ]\n      }\n    ]\n  },\n  \"execute\": {\n    \"expressions\": [\n      {\n        \"type\": \"IF_ELSE\",\n        \"object\": {\n        \"hasElseBlock\" : true,  \n        \"conditions\": [\n              {\n                \"leftExp\": \"productcode\",\n                \"rightExp\": \"'qb-money'\",\n                \"operator\": \"EQUALS\",\n                \"hasNextCondition\": false,\n                \"nextConditionOperator\": \"string\"\n              }\n        ],\n         \"innerIfExpression\" : {\n              \"type\": \"RETURN\",\n              \"object\": \"money_card:transacted\"\n           },\n           \"innerElseExpression\" : {\n              \"type\": \"RETURN\",\n              \"object\": \"''\"\n           }  \n          }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/mvelgenerator/generate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"mvelgenerator",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Code+Return",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": {\n      \"methods\": [\n        {\n          \"methodName\": \"extractByPath\",\n          \"returnVariable\": \"authId\",\n          \"arguments\": [\n            \"event\",\"'$body.id'\",\"pipelineContext\"\n          ]\n        }\n      ],\n      \"assignments\": [\n        {\n          \"name\": \"isEntity\",\n          \"value\": \"false\"\n        }\n      ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/mvelgenerator/generate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"mvelgenerator",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Code+Return Complex",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"code\": {\n    \"methods\": [\n      {\n        \"methodName\": \"extractByPath\",\n        \"returnVariable\": \"start_time\",\n        \"arguments\": [\n          \"rawEvent\",\"'$.body.start_timetamp'\",\"pipelineContext\"\n        ]\n      },\n     {\n        \"methodName\": \"extractByPath\",\n        \"returnVariable\": \"end_time\",\n        \"arguments\": [\n          \"rawEvent\",\"'$.source.event_timeStamp'\",\"pipelineContext\"\n        ]\n      }\n    ]\n  },\n  \"execute\": {\n    \"expressions\": [\n      {\n        \"type\": \"RETURN\",\n        \"object\": \"(long)end_time-(long)start_time\"\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/mvelgenerator/generate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"mvelgenerator",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Return only",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"execute\": {\n    \"expressionsMap\": {\n      \"IF_ELSE\": {\n          hasElseBlock : false\n      }\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/mvelgenerator/generate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"mvelgenerator",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

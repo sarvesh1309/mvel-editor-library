@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping(value = "v1/mvelgenerator")
-public class MvelGenerator {
+public class MvelGeneratorController {
 
     @Resource
     MvelGeneratorService generatorService;

@@ -1,9 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <script src="js/lib/angular.min.js"></script>
-    <script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
     <link href="css/mvel-form.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/home.js"></script>
     <script src="js/generateYaml.js"></script>
@@ -12,31 +11,49 @@
 <body ng-app = "mvel-editor">
 <h1 class="mvel-editor">Mvel Editor</h1>
 <div class="main" ng-controller="generate">
-<form id="generateYaml" ng-submit = "generateMvel()">
+<form id="generateYaml">
     <div id="accordion1" role="tablist">
         <div class="card">
             <div class="card-header" role="tab" id="headingOne1">
                 <h5 class="mb-0"> <a data-toggle="collapse" href="#collapseOne1" role="button" aria-expanded="true" aria-controls="collapseOne1"> Silent Code Part  </a> </h5>
             </div>
             <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordion1">
-                <div id="codeHtmlContent" ></div>
+                <div id="codeHtmlContent">
+                    Select Expression to add : <select id="code-exp" name="code-exp">
+                        <option value="method">Method</option>
+                        <option value="assignment">assignment</option>
+                        <option value="singlelineexp">Single Line Expression </option>
+                    </select>
+                    <input type="button" value=" Add Code" id="add-code-exp" />
+                    <fieldset id = "code-block">
+                    </fieldset>
+                </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header" role="tab" id="headingTwo1">
                 <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseTwo1" role="button" aria-expanded="false" aria-controls="collapseTwo1"> Main Code </a> </h5>
             </div>
-            <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordion1">
-                <div class="card-body">Content for Accordion Panel 2</div>
+            <div id="collapseTwo1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordion1">
+                <div id="executeHtmlContent">
+                    Select Expression to add : <select id="code-exp2" name="code-exp2">
+                        <option value="return">Return</option>
+                        <option value="ifElse">IF-Else</option>
+<!--                        <option value="singlelineexp">Single Line Expression </option>-->
+                    </select>
+                    <input type="button" value=" Add Execute" id="add-code-exp2" />
+                    <fieldset id = "code-block2">
+                    </fieldset>
+                </div>
             </div>
         </div>
     </div>
     <div class="formRow">
-        <input type="submit" class="generateYamlButton" value="Generate Yaml" /> <br>
+        <input type="button" class="generateYamlButton" value="Generate Yaml" id="generateYamlButton"/> <br>
     </div>
 
 </form>
     </div>
-<textarea rows="4" cols="50" class="outputYaml" placeholder="Generated output will display here"></textarea>
+<textarea id="outputYaml" rows="4" cols="50" class="outputYaml" placeholder="Generated output will display here"></textarea>
 </body>
 </html>

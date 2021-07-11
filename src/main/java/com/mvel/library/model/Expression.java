@@ -2,9 +2,7 @@ package com.mvel.library.model;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class Expression extends Code {
+public class Expression extends MvelBasicTemplate {
      Variable returnVariable;
 }

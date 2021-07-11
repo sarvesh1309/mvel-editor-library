@@ -5,9 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class IFExpression extends Expression {
+public class IFExpression {
    List<Condition> conditions;
    boolean hasElseBlock;
-   ExpressionConfiguration innerIfExpression;
-   ExpressionConfiguration innerElseExpression;
+   boolean hasInnerIf;
+   IFExpression nestedIf;
+   MvelBasicTemplate innerIfExpression;
+   MvelBasicTemplate innerElseExpression;
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvel.library.model.*;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
+import javax.validation.ValidationException;
 import java.util.List;
 
 
@@ -19,30 +19,36 @@ public class MvelGeneratorService {
         }
         StringBuilder mvelBuilder = new StringBuilder();
         if (input.getCode() != null) {
-            mvelBuilder.append(getCodeString(input));
+            mvelBuilder.append("@code{").append(getCodeString(input.getCode())).append("}");
         }
-        if (input.getExecute() != null && input.getExecute().getExpressions() != null) {
-            input.getExecute().getExpressions().forEach(exp -> {
-                mvelBuilder.append(getExpressionsString(exp));
-            });
+        if (input.getExecute() != null) {
+            if (input.getExecute().getType() == ExecutionType.EXPRESSIONS) {
+                MvelBasicTemplate basicTemplate = input.getExecute().getExpressions();
+                mvelBuilder.append("@{").append(getCodeString(basicTemplate)).append("}");
+            } else if (input.getExecute().getType() == ExecutionType.IF_ELSE) {
+                IFExpression ifExpression = input.getExecute().getIfExpression();
+                mvelBuilder.append(getIfMvelExpression(ifExpression));
+            } else {
+                new ValidationException("Not a valid type");
+            }
         }
         return mvelBuilder.toString();
 
     }
 
-    private StringBuilder getExpressionsString(ExpressionConfiguration expression) {
-        System.out.println("starting switch condition");
-        StringBuilder executeBuilder = new StringBuilder();
-            if (expression.getType().equals(ExpressionType.RETURN)) {
-                String returnVariable = (String) expression.getObject();
-                executeBuilder.append("@{").append("return ").append(returnVariable).append("}");
-            } else if (expression.getType().equals(ExpressionType.IF_ELSE)) {
-                IFExpression ifExpressions = mapper.convertValue(expression.getObject(),IFExpression.class);
-                executeBuilder.append(getIfMvelExpression(ifExpressions));
-            }
-        return executeBuilder;
-    }
-
+    //    private StringBuilder getExpressionsString(ExpressionConfiguration expression) {
+//        System.out.println("starting switch condition");
+//        StringBuilder executeBuilder = new StringBuilder();
+//            if (expression.getType().equals(ExecutionType.RETURN)) {
+//                String returnVariable = (String) expression.getObject();
+//                executeBuilder.append("@{").append("return ").append(returnVariable).append("}");
+//            } else if (expression.getType().equals(ExecutionType.IF_ELSE)) {
+//                IFExpression ifExpressions = mapper.convertValue(expression.getObject(),IFExpression.class);
+//                executeBuilder.append(getIfMvelExpression(ifExpressions));
+//            }
+//        return executeBuilder;
+//    }
+//
     private StringBuilder getIfMvelExpression(IFExpression exp) {
         if (exp == null) return new StringBuilder();
         StringBuilder ifMvelBuilder = new StringBuilder();
@@ -55,10 +61,13 @@ public class MvelGeneratorService {
         } while (conditions.get(i++).isHasNextCondition());
         ifMvelBuilder.append("}");
 
-        ExpressionConfiguration innerIfExpression = exp.getInnerIfExpression();
-        ifMvelBuilder.append(getExpressionsString(innerIfExpression));
+        if (exp.isHasInnerIf() && exp.getInnerIfExpression() != null) {
+            ifMvelBuilder.append(getIfMvelExpression(exp.getNestedIf()));
+        }
+        ifMvelBuilder.append("@{").append(getCodeString(exp.getInnerIfExpression())).append("}");
+
         if (exp.isHasElseBlock()) {
-            ifMvelBuilder.append("@else{}").append(getExpressionsString(exp.getInnerElseExpression()));
+            ifMvelBuilder.append("@else{}").append("@{").append(getCodeString(exp.getInnerElseExpression())).append("}");
         }
         ifMvelBuilder.append("@end{}");
         return ifMvelBuilder;
@@ -68,23 +77,31 @@ public class MvelGeneratorService {
         return new StringBuilder();
     }
 
-    public StringBuilder getCodeString(Input input) {
-        StringBuilder builder = new StringBuilder("@code{");
-        if (input.getCode().getMethods() != null) {
-            input.getCode().getMethods().forEach(
+    public StringBuilder getCodeString(MvelBasicTemplate basicTemplate) {
+        if(basicTemplate == null) return null;
+        StringBuilder builder = new StringBuilder();
+        if (basicTemplate.getMethods() != null) {
+            basicTemplate.getMethods().forEach(
                     method -> {
                         appendMethod(method, builder);
                     }
             );
         }
-        if (input.getCode().getAssignments() != null) {
-            input.getCode().getAssignments().forEach(
+        if (basicTemplate.getAssignments() != null) {
+            basicTemplate.getAssignments().forEach(
                     variable -> {
                         appendVariable(variable, builder);
                     }
             );
         }
-        return builder.append("}");
+        if (basicTemplate.getExpressions() != null) {
+            basicTemplate.getExpressions().forEach(
+                    variable -> {
+                        builder.append(variable).append(";");
+                    }
+            );
+        }
+        return builder;
     }
 
     private void appendVariable(Assignment assignment, StringBuilder builder) {
@@ -92,6 +109,7 @@ public class MvelGeneratorService {
         builder.append(assignment.getValue());
         builder.append(";");
     }
+
 
     private void appendMethod(Method method, StringBuilder builder) {
         builder.append(method.getReturnVariable()).append(" = ").append(method.getMethodName()).append("(");

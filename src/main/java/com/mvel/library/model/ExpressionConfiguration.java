@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ExpressionConfiguration {
-    ExpressionType type;
+    ExecutionType type;
     // object can be String for RETURN | IfExpression for IF-ELSE | List<Expressions> for expressions;
     Object object;
 }

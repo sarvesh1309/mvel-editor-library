@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Code {
+public class MvelBasicTemplate {
     List<Method> methods;
     List<Assignment> assignments;
-    String simpleExpression;
+    List<String> expressions;
 }

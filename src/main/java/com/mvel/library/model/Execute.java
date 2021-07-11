@@ -6,5 +6,7 @@ import java.util.ArrayList;
 
 @Data
 public class Execute {
-    ArrayList<ExpressionConfiguration> expressions;
+        ExecutionType type;
+        MvelBasicTemplate expressions;
+        IFExpression ifExpression;
 }

@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Input {
-    Code code;
+    MvelBasicTemplate code;
     Execute execute;
 }

@@ -5,55 +5,103 @@
     <link href="css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/home.js"></script>
-    <script src="js/generateYaml.js"></script>
+    <!--    <script src="js/generateYaml.js"></script>-->
 </head>
 
-<body ng-app = "mvel-editor">
+<body ng-app="mvel-editor">
 <h1 class="mvel-editor">Mvel Editor</h1>
 <div class="main" ng-controller="generate">
-<form id="generateYaml">
-    <div id="accordion1" role="tablist">
-        <div class="card">
-            <div class="card-header" role="tab" id="headingOne1">
-                <h5 class="mb-0"> <a data-toggle="collapse" href="#collapseOne1" role="button" aria-expanded="true" aria-controls="collapseOne1"> Silent Code Part  </a> </h5>
-            </div>
-            <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordion1">
-                <div id="codeHtmlContent">
-                    Select Expression to add : <select id="code-exp" name="code-exp">
+    <form id="generateYaml">
+        <div id="accordion1" role="tablist">
+            <div class="card">
+                <div class="card-header" role="tab" id="headingOne1">
+                    <h5 class="mb-0"><a data-toggle="collapse" href="#collapseOne1" role="button" aria-expanded="true" aria-controls="collapseOne1"> Silent Code
+                        Part </a></h5>
+                </div>
+                <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordion1">
+                    <div id="codeHtmlContent">
+                        Select Expression to add : <select id="code-exp" name="code-exp">
                         <option value="method">Method</option>
                         <option value="assignment">assignment</option>
-                        <option value="singlelineexp">Single Line Expression </option>
+                        <option value="singlelineexp">Single Line Expression</option>
                     </select>
-                    <input type="button" value=" Add Code" id="add-code-exp" />
-                    <fieldset id = "code-block">
-                    </fieldset>
+                        <input type="button" value=" Add Code" id="add-code-exp"/>
+                        <fieldset id="code-block">
+                        </fieldset>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header" role="tab" id="headingTwo1">
-                <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseTwo1" role="button" aria-expanded="false" aria-controls="collapseTwo1"> Main Code </a> </h5>
-            </div>
-            <div id="collapseTwo1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordion1">
-                <div id="executeHtmlContent">
-                    Select Expression to add : <select id="code-exp2" name="code-exp2">
-                        <option value="return">Return</option>
-                        <option value="ifElse">IF-Else</option>
-<!--                        <option value="singlelineexp">Single Line Expression </option>-->
-                    </select>
-                    <input type="button" value=" Add Execute" id="add-code-exp2" />
-                    <fieldset id = "code-block2">
-                    </fieldset>
+            <div class="card">
+                <div class="card-header" role="tab" id="headingTwo1">
+                    <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapseTwo1" role="button" aria-expanded="false"
+                                        aria-controls="collapseTwo1"> Main Code </a></h5>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="formRow">
-        <input type="button" class="generateYamlButton" value="Generate Yaml" id="generateYamlButton"/> <br>
-    </div>
+                <div id="collapseTwo1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordion1">
+                    <div id="executeHtmlContentType">
+                        Select Expression Type : <select id="execute-exp-type" name="execute-exp-type">
+                        <option value="EXPRESSIONS">EXPRESSIONS</option>
+                        <option value="IF_ELSE">IF-Else</option>
+                        <!--                        <option value="singlelineexp">Single Line Expression </option>-->
+                    </select>
+                        <input type="button" value="Next" id="execute-exp-next"/>
+                        <div id="executeHtmlContent-expression" class="hide">
+                            Select Expression to add : <select id="execute-exp" name="execute-exp">
+                            <option value="method">Method</option>
+                            <option value="assignment">assignment</option>
+                            <option value="singlelineexp">Single Line Expression</option>
+                            <!--                        <option value="singlelineexp">Single Line Expression </option>-->
+                        </select><input type="button" value=" Add Expression" id="add-expression-block" />
+                            <fieldset id = "expression-block"></fieldset>
+                        </div>
 
-</form>
-    </div>
-<textarea id="outputYaml" rows="4" cols="50" class="outputYaml" placeholder="Generated output will display here"></textarea>
+                        <div id="executeHtmlContent-if-Else" class="hide">
+                            <br>
+                            If Conditions :
+                            <fieldset id="condition-block">
+                                <div class="execute fieldwrapper conditionCont" id="condition-field0">
+                                    <input type="text" class="inputfield conditionLeft" placeholder="left Var" size="50"/>
+                                    <select class="inputfield operator">
+                                        <option value="EQUALS">EQUALS</option>
+                                        <option value="NOT_EQUALS">NOT_EQUALS</option>
+                                    </select>
+                                    <input type="text" class="inputfield conditionRight" placeholder="right Var" size="50"/>
+                                    <input type="checkbox" class="inputfield conditionMore">
+                                    <select id="conditionOperator" class="inputfield conditionOperator">
+                                        <option value="OR">OR</option>
+                                        <option value="AND">AND</option>
+                                    </select>
+                                    <input type="button" value=" Add Condition" id="add-condition"/>
+                                </div>
+                            </fieldset>
+                            <div id="if-block">
+                                If-BLock code Add :
+                                <select id="execute-exp-if" name="execute-exp-if">
+                                    <option value="method">Method</option>
+                                    <option value="assignment">assignment</option>
+                                    <option value="singlelineexp">Single Line Expression</option>
+                                    <!--                        <option value="singlelineexp">Single Line Expression </option>-->
+                                </select><input type="button" value=" Add If Block Exp" id="add-execute-if-block" />
+                            </div>
+                            <div id="else-block">
+                                else-BLock code Add :
+                                <select id="execute-exp-else" name="execute-exp-else">
+                                    <option value="method">Method</option>
+                                    <option value="assignment">assignment</option>
+                                    <option value="singlelineexp">Single Line Expression</option>
+                                    <!--                        <option value="singlelineexp">Single Line Expression </option>-->
+                                </select><input type="button" value=" Add Else BLock Exp" id="add-execute-else-block" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="formRow">
+            <input type="button" class="generateYamlButton" value="Generate Yaml" id="generateYamlButton"/> <br>
+        </div>
+
+    </form>
+</div>
+<textarea id="outputYaml" rows="4" cols="150" class="outputYaml" placeholder="Generated output will display here"></textarea>
 </body>
 </html>

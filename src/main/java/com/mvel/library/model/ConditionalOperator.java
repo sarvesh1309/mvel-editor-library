@@ -10,7 +10,9 @@ public enum ConditionalOperator {
     GREATER_AND_EQUAL(">="),
     GREATER(">"),
     LOWER(">"),
-    LOWER_EQUAL(">");
+    LOWER_EQUAL(">"),
+    AND("&&"),
+    OR("||");
 
 
     private String value;

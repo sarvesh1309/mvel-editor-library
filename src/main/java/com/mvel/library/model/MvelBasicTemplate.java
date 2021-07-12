@@ -10,5 +10,5 @@ import java.util.List;
 public class MvelBasicTemplate {
     List<Method> methods;
     List<Assignment> assignments;
-    List<String> expressions;
+    List<String> lines;
 }

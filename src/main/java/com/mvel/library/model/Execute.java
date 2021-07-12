@@ -1,12 +1,11 @@
 package com.mvel.library.model;
 
 import lombok.Data;
-
 import java.util.ArrayList;
 
 @Data
 public class Execute {
         ExecutionType type;
         MvelBasicTemplate expressions;
-        IFExpression ifExpression;
+        ArrayList<IFExpression> ifExpressions;
 }
